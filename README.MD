@@ -36,11 +36,11 @@ A function is provided to modify the final output to customize it for various re
 - simplify the output by processing it in advance allowing clients to have ready to display response
 
 ### How to modify
-Go to `src/Transformer.go` and modify the function:
+Go to `src/Custom.go` and modify the function:
 ```go
 package src
 
-func Transform(request PendingRequest, response *Response) {
+func Transform(request Request, response *Response) {
     // code here
 }
 ```
@@ -49,7 +49,7 @@ Example code:
 ```go
 package src
 
-func Transform(request PendingRequest, response *Response) {
+func Transform(request Request, response *Response) {
   if request.Path == "/skyblock/profiles" {
     response.Data = "{\"success\": true, \"profiles\": \"Modified\"}"
   }
