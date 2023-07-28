@@ -2,6 +2,14 @@
 
 Webserver for Hypixel mods backend. Written with efficiency in mind.
 
+## Why GoLang
+Project is created for developers who wish to spend as little money as possible on the hosting server:
+- Python and Nodejs are too slow
+- Java uses too much memory for JVM
+- Rust is fast but too complicated for public to maintain
+- Go stands between Java and Rust in the sweet spot
+
+
 ## Server Configuration
 
 ```
@@ -12,6 +20,7 @@ Webserver for Hypixel mods backend. Written with efficiency in mind.
   -port int
         Port to listen to (default 8000)
 ```
+
 
 ## Transformer
 
@@ -45,6 +54,7 @@ func Transform(request PendingRequest, response *Response) {
 
 Json and NBT parsers can also be used for further modification.
 
+
 ## Error Codes
 
 Other status codes are proxied from hypixel.
@@ -56,6 +66,7 @@ Other status codes are proxied from hypixel.
 | 400  | Parameter(s) required for this endpoint               | Parameter such as `profile`, `uuid`, etc.                                                                                                       |
 | 414  | Parameter(s) value is too long                        | If the parameter exceeds 36 character. This usually means the value is malformed. The longest existing Parameter is UUID which is 36 character. |
 | 500  | Internal Error encountered. Admins have been notified | An exception appeared that has not been expected                                                                                                |
+
 
 ## Endpoints
 
@@ -72,6 +83,7 @@ Other status codes are proxied from hypixel.
 | `/skyblock/profile`  | `profile`'s id  | 30 Minutes | Longer than `profiles`. Due to its potential abuse with auctions api                                   |
 | `/skyblock/museum`   | `profile`'s id  | 12 Hours   | Endpoint used to have an overview of stats                                                             |
 | `/skyblock/bingo`    | `uuid`          | 2 Hours    | Can be used to track each other progress. Too fast update will result in abuse with automated trackers |
+
 
 ## Headers
 
