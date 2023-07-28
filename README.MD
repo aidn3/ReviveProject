@@ -37,7 +37,7 @@ A function is provided to modify the final output to customize it for various re
 
 ### How To Customize
 All endpoints are defined in `./endpoints.json`:
-- `maxLive` is for how long the data are cached.
+- `maxLive` is for how long the data are cached in seconds.
 - `parameter` is whether the endpoint takes a parameter. `null` if none.
 - `custom` is whether the endpoint is totally custom and should just be left for the developer to code. 
 
