@@ -1,5 +1,5 @@
 package src
 
-func Transform(response *Response) {
+func Transform(request PendingRequest, response *Response) {
 
 }

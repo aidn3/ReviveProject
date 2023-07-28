@@ -70,7 +70,7 @@ func serverHandler(manager EndPointManager, hypixel HypixelApi, expiringCache ca
 	}
 
 	// Allow developers to change the final output
-	Transform(hypixelResponse)
+	Transform(*pendingRequest, hypixelResponse)
 
 	w.WriteHeader(hypixelResponse.Code)
 	_, _ = fmt.Fprintf(w, hypixelResponse.Data)
