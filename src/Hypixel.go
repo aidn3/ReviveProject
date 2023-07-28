@@ -8,12 +8,12 @@ import (
 
 const BaseUrl = "https://api.hypixel.net"
 
-type HypixelApi struct {
+type Hypixel struct {
 	Request func(request Request) (response *Response, err error)
 }
 
-func NewHypixelApi(key string) HypixelApi {
-	return HypixelApi{
+func NewHypixelApi(key string) Hypixel {
+	return Hypixel{
 		Request: func(request Request) (response *Response, err error) {
 			url := BaseUrl + request.Path
 			if request.Parameter != nil {
