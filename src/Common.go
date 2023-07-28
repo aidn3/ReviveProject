@@ -19,8 +19,9 @@ type Parameter struct {
 }
 
 type Response struct {
-	Code int
-	Data string
+	Code  int
+	Data  string
+	Cache bool
 }
 
 func PendingRequestToString(request Request) string {

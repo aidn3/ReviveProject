@@ -75,7 +75,9 @@ func serverHandler(manager EndpointManager, hypixel Hypixel, expiringCache cache
 	w.WriteHeader(hypixelResponse.Code)
 	_, _ = fmt.Fprintf(w, hypixelResponse.Data)
 
-	expiringCache.Set(cacheKey, hypixelResponse)
+	if hypixelResponse.Cache {
+		expiringCache.Set(cacheKey, hypixelResponse)
+	}
 }
 
 func returnError(w http.ResponseWriter, message string, code int) {

@@ -41,7 +41,7 @@ func NewHypixelApi(key string) Hypixel {
 				return nil, err
 			}
 
-			return &Response{Code: res.StatusCode, Data: string(resBody)}, nil
+			return &Response{Code: res.StatusCode, Data: string(resBody), Cache: res.StatusCode == http.StatusOK}, nil
 		},
 	}
 }
