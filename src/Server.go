@@ -63,24 +63,41 @@ func serverHandler(manager EndpointManager, hypixel Hypixel, expiringCache cache
 		return
 	}
 
-	hypixelResponse, err := hypixel.Request(*pendingRequest)
-	if err != nil {
-		returnError(w, "error while trying to connect to hypixel", http.StatusInternalServerError)
-		return
+	var resultResponse *Response
+	if pendingRequest.Endpoint.Custom {
+		resultResponse = &Response{
+			Code:  http.StatusNotFound,
+			Data:  "{\"success\": false, \"cause\": \"endpoint exists but not implemented by the developer\"}",
+			Cache: false,
+		}
+	} else {
+		resultResponse, err = hypixel.Request(*pendingRequest)
+		if err != nil {
+			returnError(w, "error while trying to connect to hypixel", http.StatusInternalServerError)
+			return
+		}
+
+		if resultResponse.Code != http.StatusOK {
+			write(w, resultResponse.Data, resultResponse.Code)
+			return
+		}
 	}
 
 	// Allow developers to change the final output
-	Transform(*pendingRequest, hypixelResponse)
+	Serve(*pendingRequest, resultResponse, hypixel)
 
-	w.WriteHeader(hypixelResponse.Code)
-	_, _ = fmt.Fprintf(w, hypixelResponse.Data)
+	write(w, resultResponse.Data, resultResponse.Code)
 
-	if hypixelResponse.Cache {
-		expiringCache.Set(cacheKey, hypixelResponse)
+	if resultResponse.Cache {
+		expiringCache.Set(cacheKey, resultResponse)
 	}
 }
 
 func returnError(w http.ResponseWriter, message string, code int) {
 	w.WriteHeader(code)
 	_, _ = fmt.Fprintln(w, "{\"success\": false, \"cause\": \""+message+"\"}")
+}
+func write(w http.ResponseWriter, response string, code int) {
+	w.WriteHeader(code)
+	_, _ = fmt.Fprintf(w, response)
 }
