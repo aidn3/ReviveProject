@@ -35,13 +35,21 @@ A function is provided to modify the final output to customize it for various re
   advantage of the entire output
 - simplify the output by processing it in advance allowing clients to have ready to display response
 
-### How to modify
+### How To Customize
+All endpoints are defined in `./endpoints.json`:
+- `maxLive` is for how long the data are cached.
+- `parameter` is whether the endpoint takes a parameter. `null` if none.
+- `custom` is whether the endpoint is totally custom and should just be left for the developer to code. 
+
+You can modify existing proxy endpoint or create a new response for a custom endpoint.  
+
 Go to `src/Custom.go` and modify the function:
 ```go
 package src
 
-func Transform(request Request, response *Response) {
-    // code here
+func Serve(request Request, response *Response, hypixel Hypixel) {
+    // existing examples here
+    // ...
 }
 ```
 
@@ -49,14 +57,15 @@ Example code:
 ```go
 package src
 
-func Transform(request Request, response *Response) {
+func Serve(request Request, response *Response, hypixel Hypixel) {
   if request.Path == "/skyblock/profiles" {
     response.Data = "{\"success\": true, \"profiles\": \"Modified\"}"
   }
 }
 ```
 
-Json and NBT parsers can also be used for further modification.
+> Json and NBT parsers can also be used for further modification.
+> Check the example code in the file itself for a demonstration.
 
 
 ## Error Codes
