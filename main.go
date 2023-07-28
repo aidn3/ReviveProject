@@ -13,6 +13,7 @@ import (
 func main() {
 	port := flag.Int("port", 8000, "Port to listen to")
 	key := flag.String("key", "", "Hypixel API-Key")
+	endpointsFile := flag.String("endpoints", "./endpoints.json", "File location where all endpoints are saved")
 	cacheTime := flag.Int("cache", 60, "Time in seconds for global memory cache to speedup repeated requests")
 	flag.Parse()
 
@@ -32,16 +33,16 @@ func main() {
 		return
 	}
 
-	start(*port, *key, *cacheTime)
+	start(*port, *key, *endpointsFile, *cacheTime)
 }
 
-func start(port int, key string, cacheTime int) {
+func start(port int, key string, endpointsFile string, cacheTime int) {
 	expiringCache := cache.NewLRU(time.Duration(cacheTime)*time.Second,
 		time.Duration(cacheTime/2)*time.Second,
 		500)
 
 	hypixel := src.NewHypixelApi(key)
-	manager, err := src.NewEndPointManager("endpoints.json")
+	manager, err := src.NewEndPointManager(endpointsFile)
 	if err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, err)
 		return
