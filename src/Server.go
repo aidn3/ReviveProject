@@ -56,7 +56,7 @@ func serverHandler(manager EndpointManager, hypixel Hypixel, expiringCache cache
 	cacheKey := PendingRequestToString(*pendingRequest)
 	response, ok := expiringCache.Get(cacheKey)
 	if ok {
-		fmt.Println("cached")
+		fmt.Println("cache hit: " + request.URL.String())
 		castedResponse := response.(*Response)
 		w.WriteHeader(castedResponse.Code)
 		_, _ = fmt.Fprintf(w, castedResponse.Data)
