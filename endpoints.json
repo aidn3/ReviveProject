@@ -1,0 +1,26 @@
+{
+  "/player": {
+    "maxLive": 43200000,
+    "parameter": "uuid"
+  },
+  "/recentgames": {
+    "maxLive": 3600000,
+    "parameter": "uuid"
+  },
+  "/skyblock/profiles": {
+    "maxLive": 300000,
+    "parameter": "uuid"
+  },
+  "/skyblock/profile": {
+    "maxLive": 1800000,
+    "parameter": "profile"
+  },
+  "/skyblock/museum": {
+    "maxLive": 43200000,
+    "parameter": "profile"
+  },
+  "/skyblock/bingo": {
+    "maxLive": 7200000,
+    "parameter": "uuid"
+  }
+}
