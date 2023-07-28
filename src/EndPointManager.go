@@ -10,11 +10,6 @@ import (
 	"strings"
 )
 
-type Endpoint struct {
-	Parameter *string `json:"parameter"`
-	MaxLive   int64   `json:"maxLive"`
-}
-
 type EndpointManager struct {
 	Endpoints map[string]Endpoint
 	Parse     func(request *http.Request) (*Request, error)
@@ -42,7 +37,7 @@ func NewEndPointManager(file string) (manage *EndpointManager, err error) {
 			}
 
 			if endpoint.Parameter == nil {
-				return &Request{Path: path, MaxLive: endpoint.MaxLive}, nil
+				return &Request{Endpoint: endpoint, Path: path}, nil
 			}
 
 			value := strings.ToLower(url.Query().Get(*endpoint.Parameter))
@@ -53,8 +48,8 @@ func NewEndPointManager(file string) (manage *EndpointManager, err error) {
 			}
 
 			return &Request{
-				Path:    path,
-				MaxLive: endpoint.MaxLive,
+				Endpoint: endpoint,
+				Path:     path,
 				Parameter: &Parameter{
 					Key:   *endpoint.Parameter,
 					Value: value,

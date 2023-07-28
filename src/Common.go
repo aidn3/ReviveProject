@@ -1,10 +1,16 @@
 package src
 
 type Request struct {
+	Endpoint Endpoint
+
 	Path      string
 	Parameter *Parameter
+}
 
-	MaxLive int64
+type Endpoint struct {
+	Parameter *string `json:"parameter"`
+	MaxLive   int64   `json:"maxLive"`
+	Custom    bool    `json:"custom"`
 }
 
 type Parameter struct {
