@@ -9,6 +9,10 @@ Project is created for developers who wish to spend as little money as possible 
 - Rust is fast but too complicated for public to maintain
 - Go stands between Java and Rust in the sweet spot
 
+## Download
+Obtain latest compiled executable file from GitHub actions. [Click here](https://github.com/aidn3/ReviveProject/actions) to view the latest automated build.  
+> Is it safe? The source code is auto complied and built by GitHub servers. You can view the source code on `master` branch. 
+
 
 ## Server Configuration
 
