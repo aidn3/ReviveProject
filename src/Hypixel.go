@@ -9,15 +9,16 @@ import (
 const BaseUrl = "https://api.hypixel.net"
 
 type HypixelApi struct {
-	Request func(request PendingRequest) (response *Response, err error)
+	Request func(request Request) (response *Response, err error)
 }
 
 func NewHypixelApi(key string) HypixelApi {
 	return HypixelApi{
-		Request: func(request PendingRequest) (response *Response, err error) {
+		Request: func(request Request) (response *Response, err error) {
 			url := BaseUrl + request.Path
-			if request.Key != nil {
-				url += "?" + *request.Key + "=" + *request.Value
+			if request.Parameter != nil {
+				Param := *request.Parameter
+				url += "?" + Param.Key + "=" + Param.Value
 			}
 
 			client := &http.Client{}

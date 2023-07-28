@@ -10,29 +10,29 @@ import (
 	"strings"
 )
 
-type AvailableEndpoint struct {
+type Endpoint struct {
 	Parameter *string `json:"parameter"`
 	MaxLive   int64   `json:"maxLive"`
 }
 
-type EndPointManager struct {
-	Endpoints map[string]AvailableEndpoint
-	Parse     func(request *http.Request) (*PendingRequest, error)
+type EndpointManager struct {
+	Endpoints map[string]Endpoint
+	Parse     func(request *http.Request) (*Request, error)
 }
 
 var ErrParametersRequired = errors.New("parameter(s) required for this endpoint")
 var ErrParametersTooLong = errors.New("parameter(s) value is too long")
 var ErrEndpointNotImplemented = errors.New("endpoint not implemented")
 
-func NewEndPointManager(file string) (manage *EndPointManager, err error) {
+func NewEndPointManager(file string) (manage *EndpointManager, err error) {
 	endpoints, err := load(file)
 	if err != nil {
 		return nil, err
 	}
 
-	return &EndPointManager{
+	return &EndpointManager{
 		Endpoints: *endpoints,
-		Parse: func(request *http.Request) (*PendingRequest, error) {
+		Parse: func(request *http.Request) (*Request, error) {
 			url := request.URL
 			path := url.Path
 
@@ -42,7 +42,7 @@ func NewEndPointManager(file string) (manage *EndPointManager, err error) {
 			}
 
 			if endpoint.Parameter == nil {
-				return &PendingRequest{Path: path, MaxLive: endpoint.MaxLive}, nil
+				return &Request{Path: path, MaxLive: endpoint.MaxLive}, nil
 			}
 
 			value := strings.ToLower(url.Query().Get(*endpoint.Parameter))
@@ -52,17 +52,19 @@ func NewEndPointManager(file string) (manage *EndPointManager, err error) {
 				return nil, ErrParametersTooLong
 			}
 
-			return &PendingRequest{
+			return &Request{
 				Path:    path,
 				MaxLive: endpoint.MaxLive,
-				Key:     endpoint.Parameter,
-				Value:   &value,
+				Parameter: &Parameter{
+					Key:   *endpoint.Parameter,
+					Value: value,
+				},
 			}, nil
 		},
 	}, nil
 }
 
-func load(file string) (endpoints *map[string]AvailableEndpoint, err error) {
+func load(file string) (endpoints *map[string]Endpoint, err error) {
 	jsonFile, err := os.Open(file)
 	if err != nil {
 		fmt.Println(err)
@@ -70,7 +72,7 @@ func load(file string) (endpoints *map[string]AvailableEndpoint, err error) {
 	}
 
 	byteValue, _ := io.ReadAll(jsonFile)
-	var manager map[string]AvailableEndpoint
+	var manager map[string]Endpoint
 
 	err = json.Unmarshal(byteValue, &manager)
 	if err != nil {

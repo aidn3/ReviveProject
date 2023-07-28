@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func Listen(manager EndPointManager, hypixel HypixelApi, cache cache.ExpiringCache, port int) {
+func Listen(manager EndpointManager, hypixel HypixelApi, cache cache.ExpiringCache, port int) {
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		serverHandler(manager, hypixel, cache, writer, request)
 	})
@@ -22,7 +22,7 @@ func Listen(manager EndPointManager, hypixel HypixelApi, cache cache.ExpiringCac
 	}
 }
 
-func serverHandler(manager EndPointManager, hypixel HypixelApi, expiringCache cache.ExpiringCache, w http.ResponseWriter, request *http.Request) {
+func serverHandler(manager EndpointManager, hypixel HypixelApi, expiringCache cache.ExpiringCache, w http.ResponseWriter, request *http.Request) {
 	fmt.Println("request: " + request.URL.String())
 
 	w.Header().Set("Content-Type", "application/json")

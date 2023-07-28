@@ -1,11 +1,15 @@
 package src
 
-type PendingRequest struct {
-	Path  string
-	Key   *string
-	Value *string
+type Request struct {
+	Path      string
+	Parameter *Parameter
 
 	MaxLive int64
+}
+
+type Parameter struct {
+	Key   string
+	Value string
 }
 
 type Response struct {
@@ -13,12 +17,13 @@ type Response struct {
 	Data string
 }
 
-func PendingRequestToString(request PendingRequest) string {
+func PendingRequestToString(request Request) string {
 	// It will be converted to valid url query.
 	// Valid string as well as easier to read and process
 	result := request.Path
-	if request.Key != nil {
-		result += "?" + *request.Key + "=" + *request.Value
+	if request.Parameter != nil {
+		Param := *request.Parameter
+		result += "?" + Param.Key + "=" + Param.Value
 	}
 	return result
 }
